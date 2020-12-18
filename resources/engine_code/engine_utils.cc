@@ -16,21 +16,21 @@ void vertex_cb(void *user_data, float x, float y, float z, float w)
 
 void normal_cb(void *user_data, float x, float y, float z)
 {
-    engine *t = reinterpret_cast<engine *>(user_data); 
+    engine *t = reinterpret_cast<engine *>(user_data);
 
     t->normals.push_back(glm::vec3(x,y,z));
 }
 
 void texcoord_cb(void *user_data, float x, float y, float z)
 {
-    engine *t = reinterpret_cast<engine *>(user_data); 
+    engine *t = reinterpret_cast<engine *>(user_data);
 
     t->texcoords.push_back(glm::vec3(x,y,z));
 }
 
 void index_cb(void *user_data, tinyobj::index_t *indices, int num_indices)
 {
-    engine *t = reinterpret_cast<engine *>(user_data); 
+    engine *t = reinterpret_cast<engine *>(user_data);
 
     if(num_indices == 3) // this is a triangle
     {
@@ -46,25 +46,25 @@ void index_cb(void *user_data, tinyobj::index_t *indices, int num_indices)
 
 void usemtl_cb(void *user_data, const char *name, int material_idx)
 {
-    engine *t = reinterpret_cast<engine *>(user_data); 
+    engine *t = reinterpret_cast<engine *>(user_data);
     (void)t;
 }
 
 void mtllib_cb(void *user_data, const tinyobj::material_t *materials, int num_materials)
 {
-    engine *t = reinterpret_cast<engine *>(user_data); 
+    engine *t = reinterpret_cast<engine *>(user_data);
     (void)t;
 }
 
 void group_cb(void *user_data, const char **names, int num_names)
 {
-    engine *t = reinterpret_cast<engine *>(user_data); 
+    engine *t = reinterpret_cast<engine *>(user_data);
     (void)t;
 }
 
 void object_cb(void *user_data, const char *name)
 {
-    engine *t = reinterpret_cast<engine *>(user_data); 
+    engine *t = reinterpret_cast<engine *>(user_data);
     (void)t;
 }
 
@@ -362,15 +362,15 @@ void engine::gl_setup()
     // fill with random values
     std::default_random_engine gen;
     std::uniform_int_distribution<unsigned char> dist(150,255);
-    std::uniform_int_distribution<unsigned char> dist2(12,45);
+    std::uniform_int_distribution<unsigned char> dist2(12,38);
     PerlinNoise p;
 
     for(auto it = image_data.begin(); it != image_data.end(); it++)
     {
         int index = (it-image_data.begin());
-        float noise = std::clamp(std::abs(p.noise((index/(WIDTH))*0.003, (index%(4*WIDTH))*0.003, 0.0)-0.3 +
-                                          p.noise((index/(WIDTH))*0.006, (index%(4*WIDTH))*0.006, 0.2)-0.25 +
-                                          p.noise((index/(WIDTH))*0.012, (index%(4*WIDTH))*0.012, 0.25)-0.15)/1.618, 0., 1.);
+        float noise = std::clamp(std::abs(p.noise((index/(WIDTH))*0.003, (index%(4*WIDTH))*0.001, 0.0) *
+                                          p.noise((index/(WIDTH))*0.006, (index%(4*WIDTH))*0.005, 0.5) *
+                                          p.noise((index/(WIDTH))*0.012, (index%(4*WIDTH))*0.015, 0.25))/1.618, 0., 1.);
 
         unsigned char rxor = (unsigned char)((index/(WIDTH))%256) ^ (unsigned char)((index%(4*WIDTH))%256);
 
@@ -389,7 +389,7 @@ void engine::gl_setup()
                 break;
 
             case 0:
-                *it = noise < 0.54 ? noise*0.75*(rxor) : noise*dist(gen);
+                *it = noise < 0.45 ? noise*0.75*(rxor) : noise*dist(gen);
                 break;
 
             default:
