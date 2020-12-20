@@ -370,7 +370,7 @@ void engine::gl_setup()
         int index = (it-image_data.begin());
         float noise = std::clamp(std::abs(p.noise((index/(WIDTH))*0.003, (index%(4*WIDTH))*0.001, 0.0) *
                                           p.noise((index/(WIDTH))*0.006, (index%(4*WIDTH))*0.005, 0.5) *
-                                          p.noise((index/(WIDTH))*0.012, (index%(4*WIDTH))*0.015, 0.25))/1.618, 0., 1.);
+                                          p.noise((index/(WIDTH))*0.012, (index%(4*WIDTH))*0.015, 0.25) + 0.618)/1.618, 0., 1.);
 
         unsigned char rxor = (unsigned char)((index/(WIDTH))%256) ^ (unsigned char)((index%(4*WIDTH))%256);
 
@@ -579,20 +579,41 @@ void engine::draw_everything()
     if (show_demo_window) ImGui::ShowDemoWindow(&show_demo_window);
 
     // do my own windows
-    ImGui::SetNextWindowSize(ImVec2(256,385));
     ImGui::Begin("Controls0", NULL, 0);
     ImGui::Text("This is some text");
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(256,385));
     ImGui::Begin("Controls1", NULL, 0);
     ImGui::Text("This is some text");
     ImGui::End();
 
-    ImGui::SetNextWindowSize(ImVec2(256,385));
     ImGui::Begin("Controls2", NULL, 0);
     ImGui::Text("This is some text");
     ImGui::End();
+
+
+    // dummy variables, till I have the other classes set up
+    float yaw, pitch, roll, throttle;
+    int xoffset = 0, yoffset = 0;
+    
+    ImGui::Begin("Render Settings", NULL, 0);
+    ImGui::Text("Player ship settings");
+    ImGui::Text("");
+    ImGui::SliderFloat("throttle", &throttle, 0., 100.);
+    ImGui::Text("");
+    ImGui::SliderFloat("yaw setting", &yaw, -2.*PI, 2.*PI);
+    ImGui::SliderFloat("pitch setting", &pitch, -2.*PI, 2.*PI);
+    ImGui::SliderFloat("roll setting", &roll, -2.*PI, 2.*PI);
+    ImGui::Text("");
+    ImGui::Text("");
+    ImGui::Text("UI settings");
+    ImGui::Text("");
+    ImGui::SliderInt("x offset", &xoffset, -3000, 2000);
+    ImGui::SliderInt("y offset", &yoffset, -3000, 2000);
+    ImGui::Text("");
+    
+    ImGui::End();
+
 
     ImGui::Render();
 

@@ -86,5 +86,7 @@ using json = nlohmann::json;
 #define WIDTH  640
 #define HEIGHT 480
 
+constexpr double PI = 3.14159265358979323846;
+
 
 #endif
