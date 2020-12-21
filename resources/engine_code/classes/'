@@ -7,6 +7,7 @@ public:
     // generates the geometry for the box and arrow indicators, compiles shaders
     void init();
     
+    
     // light grey box surrounding visible area
     // function
     void draw_box();
