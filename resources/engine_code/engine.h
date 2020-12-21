@@ -2,6 +2,8 @@
 #define ENGINE
 
 #include "includes.h"
+#include "classes/youeye.h"
+#include "classes/playership.h"
 
 class engine
 {
@@ -38,7 +40,7 @@ private:
 	bool pquit = false;
 
 public:
-//placeholder
+//placeholder - this moves to the classes now
 // OBJ data (per mesh)	
 	// this may vary in length
 	std::vector<glm::vec4> vertices;
