@@ -263,6 +263,73 @@ void engine::create_window()
     colors[ImGuiCol_ModalWindowDimBg]       = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 }
 
+
+
+// PLAYERSHIP CLASS FUNCTIONS
+void playership_class::init()
+{
+    
+}
+
+// UI CLASS FUNCTIONS
+void UI_class::init()
+{
+    //box
+    // compile shaders
+    // verticies for the box
+    //      e-------g    +y
+    //     /|      /|     |
+    //    / |     / |     |___+x
+    //   a-------c  |    /
+    //   |  f----|--h   +z
+    //   | /     | /
+    //   |/      |/
+    //   b-------d
+
+    #define POS  0.125f
+    #define NEG -0.125f
+
+    glm::vec3 a(NEG, POS, POS);
+    glm::vec3 b(NEG, NEG, POS);
+    glm::vec3 c(POS, POS, POS);
+    glm::vec3 d(POS, NEG, POS);
+    glm::vec3 e(NEG, POS, NEG);
+    glm::vec3 f(NEG, NEG, NEG);
+    glm::vec3 g(POS, POS, NEG);
+    glm::vec3 h(POS, NEG, NEG);
+    
+    // vao, vbo - this one only has point locations
+    glGenVertexArrays( 1, &box_vao );
+    glBindVertexArray( box_vao );
+
+    glGenBuffers( 1, &box_vbo );
+    glBindBuffer( GL_ARRAY_BUFFER, box_vbo );
+
+    // buffering
+
+
+    
+    //arrow - only keeping one model and drawing each individual one with shader params
+    // compile shaders
+    // verticies
+    // buffering
+}
+
+void UI_class::draw_box()
+{
+    //use shader
+    //draw num_verts
+}
+
+void UI_class::draw_arrows()
+{
+    // use shader
+    
+    //for each of the arrows needed
+    // set params
+    // draw num_verts
+}
+
 void engine::quit_conf(bool *open)
 {
     if(*open)
@@ -416,8 +483,9 @@ void engine::gl_setup()
     glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RGBA8UI, WIDTH, HEIGHT, 0, GL_RGBA_INTEGER, GL_UNSIGNED_BYTE, &image_data[0]);
     glBindImageTexture(0, display_texture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA8UI);
 
-    // compute shaders, etc...
-
+    // initialize these classes
+    ui.init();
+    ship.init();
 }
 
 
@@ -553,6 +621,9 @@ void engine::draw_everything()
 
     // draw the stuff on the GPU
 
+    // UI display
+    
+    
     // texture display
     glUseProgram(display_shader);
     glBindVertexArray( display_vao );
@@ -560,13 +631,12 @@ void engine::draw_everything()
 
     glDrawArrays( GL_TRIANGLES, 0, 6 );
 
+
+
     // Start the Dear ImGui frame
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame(window);
     ImGui::NewFrame();
-
-
-
 
     static bool show_dockspace = true;
     if (show_dockspace) ShowExampleAppDockSpace(&show_dockspace);
@@ -592,11 +662,12 @@ void engine::draw_everything()
     ImGui::End();
 
 
+    ImGui::Begin("Render Settings", NULL, 0);
+
     // dummy variables, till I have the other classes set up
-    float yaw, pitch, roll, throttle;
+    float yaw = 0, pitch = 0, roll = 0, throttle = 0;
     int xoffset = 0, yoffset = 0;
     
-    ImGui::Begin("Render Settings", NULL, 0);
     ImGui::Text("Player ship settings");
     ImGui::Text("");
     ImGui::SliderFloat("throttle", &throttle, 0., 100.);

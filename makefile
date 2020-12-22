@@ -2,7 +2,8 @@ FLAGS =  -Wall -O3 -std=c++17 -lGL -lstdc++fs $(shell pkg-config sdl2 --cflags -
 IMGUI_FLAGS   =  -Wall -DIMGUI_IMPL_OPENGL_LOADER_GL3W `sdl2-config --cflags` 
 
 
-all: msg exe clean run
+all: msg exe clean
+run: run
 
 msg:
 		@echo
@@ -33,7 +34,7 @@ resources/VAT/mmccutchen_BigInt/*.o:
 		@echo
 
 utils.o: resources/engine_code/engine.h resources/engine_code/engine_utils.cc
-		g++ -c -o utils.o resources/engine_code/engine_utils.cc                         ${FLAGS}
+		g++ -c -o utils.o resources/engine_code/engine_utils.cc 			${FLAGS}
 
 engine.o: resources/engine_code/engine.h resources/engine_code/engine.cc
 		g++ -c -o engine.o resources/engine_code/engine.cc                              ${FLAGS}
