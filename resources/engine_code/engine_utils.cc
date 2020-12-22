@@ -176,7 +176,7 @@ void engine::create_window()
     	fprintf(stderr, "Failed to initialize OpenGL loader!\n");
 
     glEnable(GL_DEPTH_TEST);
-    //glEnable(GL_LINE_SMOOTH);
+    // glEnable(GL_LINE_SMOOTH);
 
     glPointSize(3.0);
     glEnable(GL_BLEND);
@@ -202,7 +202,7 @@ void engine::create_window()
     ImGui_ImplSDL2_InitForOpenGL(window, GLcontext);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
-    clear_color = ImVec4(75.0f/255.0f, 75.0f/255.0f, 75.0f/255.0f, 0.5f); // initial value for clear color
+    clear_color = ImVec4(24.0f/255.0f, 22.0f/255.0f, 75.0f/255.0f, 0.5f); // initial value for clear color
 
     // really excited by the fact imgui has an hsv picker to set this
     glClearColor(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
@@ -276,6 +276,8 @@ void UI_class::init()
 {
     //box
     // compile shaders
+    box_shader = Shader("resources/engine_code/shaders/box.vs.glsl", "resources/engine_code/shaders/box.fs.glsl").Program;
+    
     // verticies for the box
     //      e-------g    +y
     //     /|      /|     |
@@ -286,19 +288,55 @@ void UI_class::init()
     //   |/      |/
     //   b-------d
 
-    #define POS  0.125f
-    #define NEG -0.125f
+    #define POS  0.618f
+    #define NEG -0.618f
 
-    glm::vec3 a(NEG, POS, POS);
-    glm::vec3 b(NEG, NEG, POS);
-    glm::vec3 c(POS, POS, POS);
-    glm::vec3 d(POS, NEG, POS);
-    glm::vec3 e(NEG, POS, NEG);
-    glm::vec3 f(NEG, NEG, NEG);
-    glm::vec3 g(POS, POS, NEG);
-    glm::vec3 h(POS, NEG, NEG);
+    glm::vec3 a(NEG, POS*POS, POS);
+    glm::vec3 b(NEG, NEG*POS, POS);
+    glm::vec3 c(POS, POS*POS, POS);
+    glm::vec3 d(POS, NEG*POS, POS);
+    glm::vec3 e(NEG, POS*POS, NEG);
+    glm::vec3 f(NEG, NEG*POS, NEG);
+    glm::vec3 g(POS, POS*POS, NEG);
+    glm::vec3 h(POS, NEG*POS, NEG);
+
+    std::vector<glm::vec3> points;
+    points.push_back(a); 
+    points.push_back(b); 
+
+    points.push_back(a); 
+    points.push_back(c); 
+
+    points.push_back(a); 
+    points.push_back(e); 
+
+    points.push_back(h);
+    points.push_back(f);
+
+    points.push_back(h);
+    points.push_back(g);
+
+    points.push_back(h);
+    points.push_back(d);
+
+    points.push_back(e);
+    points.push_back(g);
+    points.push_back(g);
+    points.push_back(c);
+    points.push_back(c);
+    points.push_back(d);
+    points.push_back(d);
+    points.push_back(b); 
+    points.push_back(b); 
+    points.push_back(f); 
+    points.push_back(f); 
+    points.push_back(e); 
+    
     
     // vao, vbo - this one only has point locations
+    int num_bytes_points =  sizeof(glm::vec3) * points.size();
+    box_num_verts = points.size();
+    
     glGenVertexArrays( 1, &box_vao );
     glBindVertexArray( box_vao );
 
@@ -306,19 +344,45 @@ void UI_class::init()
     glBindBuffer( GL_ARRAY_BUFFER, box_vbo );
 
     // buffering
+    glBufferData(GL_ARRAY_BUFFER, num_bytes_points, NULL, GL_DYNAMIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, num_bytes_points, &points[0]);
+
+    // set up attributes
+    GLuint points_attribute = glGetAttribLocation(box_shader, "vPosition");
+    glEnableVertexAttribArray(points_attribute);
+    glVertexAttribPointer(points_attribute, 3, GL_FLOAT, GL_FALSE, 0, (GLvoid*) (static_cast<const char*>(0) + (0)));
+
+
 
 
     
     //arrow - only keeping one model and drawing each individual one with shader params
     // compile shaders
     // verticies
-    // buffering
+    // vao, vbo - again only needs points, direction and color set by shader parameters
+    // buffering 
 }
 
 void UI_class::draw_box()
 {
-    //use shader
+    //use shader, bind vao, vbo
+    glUseProgram( box_shader );
+    glBindVertexArray( box_vao );
+    glBindBuffer( GL_ARRAY_BUFFER, box_vbo );
+
+    ImGuiIO& io = ImGui::GetIO();
+
+    // glUniform1f(glGetUniformLocation(orientation_widget_shader, "time"), 0.001*SDL_GetTicks());
+    glUniform1f(glGetUniformLocation(box_shader, "theta"), box_theta);
+    glUniform1f(glGetUniformLocation(box_shader, "phi"), box_phi);
+    glUniform1f(glGetUniformLocation(box_shader, "ratio"), io.DisplaySize.x/io.DisplaySize.y);
+    glUniform1f(glGetUniformLocation(box_shader, "scale"), box_scale);
+
+    glUniform3fv(glGetUniformLocation(box_shader, "offset"), 1, glm::value_ptr(box_offset)); 
+
     //draw num_verts
+    glLineWidth(3.0f);
+    glDrawArrays(GL_LINES, 0, box_num_verts);
 }
 
 void UI_class::draw_arrows()
@@ -622,14 +686,14 @@ void engine::draw_everything()
     // draw the stuff on the GPU
 
     // UI display
-    
+    ui.draw_box();
     
     // texture display
-    glUseProgram(display_shader);
-    glBindVertexArray( display_vao );
-    glBindBuffer( GL_ARRAY_BUFFER, display_vbo );
+    // glUseProgram(display_shader);
+    // glBindVertexArray( display_vao );
+    // glBindBuffer( GL_ARRAY_BUFFER, display_vbo );
 
-    glDrawArrays( GL_TRIANGLES, 0, 6 );
+    // glDrawArrays( GL_TRIANGLES, 0, 6 );
 
 
 
@@ -666,7 +730,6 @@ void engine::draw_everything()
 
     // dummy variables, till I have the other classes set up
     float yaw = 0, pitch = 0, roll = 0, throttle = 0;
-    int xoffset = 0, yoffset = 0;
     
     ImGui::Text("Player ship settings");
     ImGui::Text("");
@@ -679,9 +742,13 @@ void engine::draw_everything()
     ImGui::Text("");
     ImGui::Text("UI settings");
     ImGui::Text("");
-    ImGui::SliderInt("x offset", &xoffset, -3000, 2000);
-    ImGui::SliderInt("y offset", &yoffset, -3000, 2000);
+    ImGui::Text("Box");
+    ImGui::SliderFloat("x offset", &ui.box_offset.x, -1., 2.);
+    ImGui::SliderFloat("y offset", &ui.box_offset.y, -1., 2.);
+    ImGui::SliderFloat("theta", &ui.box_theta, -2.*PI, 2.*PI);
+    ImGui::SliderFloat("phi", &ui.box_phi, -2.*PI, 2.*PI);
     ImGui::Text("");
+    ImGui::SliderFloat("scale", &ui.box_scale, 0.1, 2.);
     
     ImGui::End();
 

@@ -87,6 +87,11 @@ class UI_class
 		GLuint box_vbo;
 		GLuint box_shader;
 
+		// box params
+		glm::vec3 box_offset = glm::vec3(-0.23, 0.155, 0.0);
+		float box_theta = 3.447, box_phi = -0.167, box_scale = 1.386f;
+
+		
 		// directional indicator arrows
 		// functions
 		void draw_arrows();
