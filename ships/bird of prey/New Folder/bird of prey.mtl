@@ -1,0 +1,17 @@
+# Blender MTL File: 'None'
+# Material Count: 1
+
+newmtl Bird_of_prey_diffuse
+Ns 54.000004
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Bump /home/jb/Documents/Repos/SpaceGame/ships/bird of prey/Images/Bird_of_prey_normal.png
+map_Kd /home/jb/Documents/Repos/SpaceGame/ships/bird of prey/Images/Bird_of_prey_lum.png
+map_Ke /home/jb/Documents/Repos/SpaceGame/ships/bird of prey/Images/Bird_of_prey_lum.png
+map_Ks /home/jb/Documents/Repos/SpaceGame/ships/bird of prey/Images/Bird_of_prey_spec.png
+map_d /home/jb/Documents/Repos/SpaceGame/ships/bird of prey/Images/Bird_of_prey_lum.png

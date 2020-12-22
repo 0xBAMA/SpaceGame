@@ -1,0 +1,29 @@
+# Blender MTL File: 'None'
+# Material Count: 2
+
+newmtl Klingon_Cargo_Vessel_decals_1
+Ns 54.000004
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Kd /home/jb/Documents/Repos/SpaceGame/ships/klingon freighter/Images/Klingon_Cargo_Vessel_decals.png
+map_d /home/jb/Documents/Repos/SpaceGame/ships/klingon freighter/Images/Klingon_Cargo_Vessel_decals.png
+
+newmtl Klingon_Cargo_Vessel_diffuse_1_2K_1
+Ns 54.000004
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Bump /home/jb/Documents/Repos/SpaceGame/ships/klingon freighter/Images/Klingon_Cargo_Vessel_normal_1_2K.png
+map_Kd /home/jb/Documents/Repos/SpaceGame/ships/klingon freighter/Images/Klingon_Cargo_Vessel_lum_1_2K.png
+map_Ke /home/jb/Documents/Repos/SpaceGame/ships/klingon freighter/Images/Klingon_Cargo_Vessel_lum_1_2K.png
+map_Ks /home/jb/Documents/Repos/SpaceGame/ships/klingon freighter/Images/Klingon_Cargo_Vessel_spec_1_2K.png
+map_d /home/jb/Documents/Repos/SpaceGame/ships/klingon freighter/Images/Klingon_Cargo_Vessel_lum_1_2K.png

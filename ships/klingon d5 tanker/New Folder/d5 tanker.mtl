@@ -1,0 +1,17 @@
+# Blender MTL File: 'None'
+# Material Count: 1
+
+newmtl D5_tanker_diffuse_1
+Ns 54.000004
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 3
+map_Bump /home/jb/Documents/Repos/SpaceGame/ships/klingon d5 tanker/Images/D5_tanker_normal.png
+map_Kd /home/jb/Documents/Repos/SpaceGame/ships/klingon d5 tanker/Images/D5_tanker_lum.png
+map_Ke /home/jb/Documents/Repos/SpaceGame/ships/klingon d5 tanker/Images/D5_tanker_lum.png
+map_Ks /home/jb/Documents/Repos/SpaceGame/ships/klingon d5 tanker/Images/D5_tanker_spec.png
+map_d /home/jb/Documents/Repos/SpaceGame/ships/klingon d5 tanker/Images/D5_tanker_lum.png
