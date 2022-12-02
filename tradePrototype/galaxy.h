@@ -3,35 +3,41 @@ using std::vector;
 
 #include <string>
 using std::string;
+#include "randomstring.h"
 
 #include <iostream>
 using std::cout;
 
-string RandomString ( const int length ) {
-	static const char alphanumerics[] =
-		"0123456789"
-		"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-		"abcdefghijklmnopqrstuvwxyz";
+// a single type of resource
+struct resource {
+	string identifier( "rice" );
+	float globalValue = 0.0f;
+};
 
-	std::string temp;
-	temp.reserve( length );
-	for (int i = 0; i < length; ++i)
-		temp += alphanumerics[ rand() % ( sizeof( alphanumerics ) - 1 ) ];
+// managing stocks held by whatever entity
+struct store {
+	// global value per resources * some modifier on each resource per planet
+	// also functions for interaction with the store ( buy / sell / etc menus )
+};
 
-	return temp;
-}
-
-// the galaxy consists of a simple graph of planets and "roads" between them
-
+// a location, node in the galaxy graph
 struct planet {
 	string identifier;
 	planet( string id ) : identifier( id ) {}
+	// position
+	// conditions on the planet? maybe some status modifiers that affect how much
+		// resources they produce... food / fuel / etc
+
+	// what about space stations? would they be distinct from planets? all tbd
 };
 
+// link between two planets
 struct road {
 	planet * endpoints[ 2 ];
+	// float distance? something - position stuff with all come later
 };
 
+// the galaxy consists of a simple graph of planets and "roads" between them
 struct galaxy {
 	vector<planet> planets;
 	vector<road> roads;
